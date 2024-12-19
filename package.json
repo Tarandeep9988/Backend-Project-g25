@@ -1,0 +1,24 @@
+{
+  "name": "user_registration_manager",
+  "version": "1.0.0",
+  "description": "node mysql javaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "commonjs",
+    "url": "git+https://github.com/Tarandeep9988/Backend-Project-g25.git"
+  },
+  "keywords": [
+    "node",
+    "mysql",
+    "javaScript"
+  ],
+  "author": "Tarandeep",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tarandeep9988/Backend-Project-g25/issues"
+  },
+  "homepage": "https://github.com/Tarandeep9988/Backend-Project-g25#readme"
+}
