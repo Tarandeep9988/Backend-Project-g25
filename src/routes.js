@@ -3,7 +3,7 @@ const { parseRequestBody } = require('./utils');
 const fs = require('fs');
 const path = require('path');
 
-const handleRoutes = async (req, res) => {
+const handleRoutes = async (req, res) => {    
     if (req.url == '/' && req.method == 'GET') {
         const filePath = path.join(__dirname, 'frontend/index.html');
         fs.readFile(filePath, (err, content) => {
@@ -51,27 +51,29 @@ const handleRoutes = async (req, res) => {
             return res.end(JSON.stringify({message: 'Invalid INPUT'}));
         }
 
-        saveData(body, (err) => {
-            if (err) {
-                res.writeHead(500, {'Content-Type': 'application/json' });
-                return res.end(JSON.stringify({ message: 'Error saving data' }));
-                
-            }
+        saveData(body)
+        .then(() => {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ message: 'Registration successfull' }));
+        })
+        .catch((e) => {
+            console.log("Error saving data:", e);
+            res.writeHead(500, {'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Error saving data' }));
         });
+
     }
     else if (req.url == '/registrations' && req.method == 'GET') {
-        try {
-            const data = await getData();
-
+        getData()
+        .then((data) => {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(data);  // Send the file data as the response
-        } catch (err) {
-            console.error(err);
+            res.end(data);
+        })
+        .catch((e) => {
+            console.error(e);
             res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Internal Server Error'); 
-        }
+            res.end('Internal Server Error');
+        });
     }
     else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
