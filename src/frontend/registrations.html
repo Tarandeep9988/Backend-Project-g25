@@ -4,22 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="registrationBox"></div>
+    <div id="registrationBox" class="card-container"></div>
     <script>
         const registrationBox = document.getElementById('registrationBox');
+
         fetch('http://localhost:3000/registrations/data')
-        .then((res) => {
-            return res.json();
-        })
+        .then((res) => res.json())
         .then((data) => {
-            registrationBox.innerHTML = JSON.stringify(data, 2, null);
-            console.log(data);
+            data.forEach((item) => {
+                // Create a card element
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                // Create card content
+                card.innerHTML = `
+                    <div class="card-content">
+                        <h3>${item.username || 'Full Name'}</h3>
+                        <h4>${item.email || 'Email Address'}</h4>
+                        <h4>${item.Phnum || 'Phone Number'}</h4>
+                        <h4>${item.dob || 'Birth Date'}</h4>
+                        <h4>${item.gender || 'Gender'}</h4>
+                        <h4>${item.password || 'Password'}</h4>
+                    </div>
+                `;
+
+                // Append card to the container
+                registrationBox.appendChild(card);
+            });
         })
         .catch((e) => {
-            console.log(e);
-        })
+            console.error('Error fetching data:', e);
+        });
     </script>
 </body>
 </html>
