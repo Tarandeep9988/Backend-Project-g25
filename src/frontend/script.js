@@ -6,8 +6,11 @@ form.addEventListener('submit', async(e) => {
 
     const formData = {
         username: form.username.value,
-        password: form.password.value,
+        email: form.email.value,
+        Phnum: form.phnum.value,
         dob: form.dob.value,
+        gender: form.gender.value,
+        password: form.password.value,
     };
 
     try {
