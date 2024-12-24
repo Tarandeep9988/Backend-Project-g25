@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="registrationBox"></div>
+    <script>
+        const registrationBox = document.getElementById('registrationBox');
+        fetch('http://localhost:3000/registrations/data')
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+            registrationBox.innerHTML = JSON.stringify(data, 2, null);
+            console.log(data);
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+    </script>
+</body>
+</html>

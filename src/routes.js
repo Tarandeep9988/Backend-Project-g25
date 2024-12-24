@@ -45,10 +45,11 @@ const handleRoutes = async (req, res) => {
     }
     else if (req.url == '/register' && req.method == 'POST') {
         const body = await parseRequestBody(req);
-
-        if (!body.username || !body.password || !body.dob) {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            return res.end(JSON.stringify({message: 'Invalid INPUT'}));
+        for (const value of Object.values(body)) {
+            if (value.trim() == "") {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({message: 'Invalid INPUT'}));
+            }
         }
 
         saveData(body)
@@ -64,16 +65,29 @@ const handleRoutes = async (req, res) => {
 
     }
     else if (req.url == '/registrations' && req.method == 'GET') {
+        const filePath = path.join(__dirname, 'frontend/registrations.html');
+        fs.readFile(filePath, (err, content) => {
+            if(err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+            } 
+            else {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(content);
+            }
+        });
+    }
+    else if (req.url == '/registrations/data' && req.method == 'GET') {
         getData()
-        .then((data) => {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(data);
+        .then((content) => {
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end(content);
         })
         .catch((e) => {
-            console.error(e);
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Internal Server Error');
-        });
+            console.log(e);
+            res.writeHead(404, { 'Content-Type': 'text/html' });
+            res.end('Data not found');
+        })
     }
     else {
         res.writeHead(404, { 'Content-Type': 'application/json' });

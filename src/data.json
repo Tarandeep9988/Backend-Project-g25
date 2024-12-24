@@ -1,23 +1,21 @@
 [
   {
-    "username": "tarandeep000",
-    "password": "fasdf",
-    "dob": "2024-12-11"
+    "name": "Tarandeep ",
+    "password": "password",
+    "dob": "2024-12-04",
+    "gender": "male",
+    "email": "tarandeep65singh@gmail.com",
+    "tel": "9646272307",
+    "age": "23"
   },
   {
-    "username": "tarandeep2228.be23@chitara.edu.in",
-    "password": "password1234",
-    "dob": "2024-12-10"
-  },
-  {
-    "username": "something",
-    "password": "23",
-    "dob": "2024-12-11"
-  },
-  {
-    "username": "something",
-    "password": "23",
-    "dob": "2024-12-11"
+    "name": "Tarandeep ",
+    "password": "234",
+    "dob": "2024-12-11",
+    "gender": "male",
+    "email": "tarandeep2228.be23@chitkara.edu.in",
+    "tel": "9988914691",
+    "age": "23"
   },
   {
     "username": "something",
@@ -68,5 +66,13 @@
     "dob": "2024-12-18",
     "gender": "Male",
     "password": "dfjfjgljfdgljdgjdgjjdfg"
+  },
+  {
+    "username": "tarandeep2228.be23@chitara.edu.in",
+    "email": "tarandeep2228.be23@chitkara.edu.in",
+    "Phnum": "123432",
+    "dob": "2024-12-10",
+    "gender": "Male",
+    "password": "asdf"
   }
 ]
