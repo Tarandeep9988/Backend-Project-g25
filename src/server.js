@@ -1,6 +1,5 @@
 const http = require('http');
 const { handleRoutes } = require('./routes');
-const { Console } = require('console');
 
 const server = http.createServer((req, res) => {
     handleRoutes(req, res);
