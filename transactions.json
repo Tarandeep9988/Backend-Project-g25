@@ -1,20 +1,29 @@
 [
   {
-    "id": 1741197814565,
-    "date": "3/5/2025",
-    "time": "11:33:34 PM",
-    "title": "adsfesf",
-    "amount": "234234",
+    "id": 1741200641410,
+    "date": "6/3/2025",
+    "time": "12:20:41 am",
+    "title": "bhai",
+    "amount": "370.00",
     "type": "income",
-    "category": "sdfesf"
+    "category": "hello world"
   },
   {
-    "id": 1741198098904,
-    "date": "3/5/2025",
-    "time": "11:38:18 PM",
-    "title": "afadsf",
-    "amount": "3234234",
+    "id": 1741203220054,
+    "date": "6/3/2025",
+    "time": "1:03:40 am",
+    "title": "bhai yar kr dena, ache points lga dena",
+    "amount": "370.00",
     "type": "income",
-    "category": "asdfesfe"
+    "category": "hello world"
+  },
+  {
+    "id": 1741203357740,
+    "date": "6/3/2025",
+    "time": "1:05:57 am",
+    "title": "pls krdena, ache points lga dena yaro",
+    "amount": "43342",
+    "type": "expense",
+    "category": "hello world"
   }
 ]

@@ -102,41 +102,40 @@ app.delete("/delete-transaction/:id", (req, res) => {
 );
 
 app.put("/update-transaction/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const { title, amount, type, category } = req.body;
-    
-    if (!title || !amount || !type || !category) {
-        return res.status(400).send("Missing required fields: title, amount, type, category");
+  const id = parseInt(req.params.id);
+  const { title, amount, type, category } = req.body;
+
+  fs.readFile("transactions.json", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error reading transactions file");
     }
-    
-    fs.readFile("transactions.json", "utf8", (err, data) => {
-        if (err) {
+
+    const transactions = data ? JSON.parse(data) : [];
+    const transactionIndex = transactions.findIndex((t) => t.id === id);
+
+    if (transactionIndex === -1) {
+      return res.status(404).send("Transaction not found");
+    }
+
+    transactions[transactionIndex] = {
+      ...transactions[transactionIndex], // Retain date & time
+      title,
+      amount,
+      type,
+      category,
+    };
+
+    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
+      if (err) {
         console.error(err);
-        return res.status(500).send("Error reading transactions file");
-        }
-    
-        const transactions = data ? JSON.parse(data) : [];
-        const transactionIndex = transactions.findIndex((t) => t.id === id);
-        if (transactionIndex === -1) {
-        return res.status(404).send("Transaction not found");
-        }
-    
-        transactions[transactionIndex] = { id, title, amount, type, category };
-    
-        fs.writeFile(
-        "transactions.json",
-        JSON.stringify(transactions, null, 2),
-        (err) => {
-            if (err) {
-            console.error(err);
-            return res.status(500).send("Error updating transaction");
-            }
-            res.send("Transaction updated successfully!");
-        }
-        );
+        return res.status(500).send("Error updating transaction");
+      }
+      res.send("Transaction updated successfully!");
     });
-    }   
-);
+  });
+});
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
