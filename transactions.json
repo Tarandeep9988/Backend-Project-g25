@@ -1,11 +1,20 @@
 [
   {
-    "id": 1741191068599,
+    "id": 1741197814565,
     "date": "3/5/2025",
-    "time": "9:41:08 PM",
-    "title": "Shopping",
-    "amount": 15002,
-    "type": "expense",
-    "category": "Food"
+    "time": "11:33:34 PM",
+    "title": "adsfesf",
+    "amount": "234234",
+    "type": "income",
+    "category": "sdfesf"
+  },
+  {
+    "id": 1741198098904,
+    "date": "3/5/2025",
+    "time": "11:38:18 PM",
+    "title": "afadsf",
+    "amount": "3234234",
+    "type": "income",
+    "category": "asdfesfe"
   }
 ]
