@@ -1,6 +1,6 @@
 import React from "react";
 
-const Transactions = ({ transactions, refreshTransactions }) => {
+const Transactions = ({ transactions, refreshTransactions, setEditTransaction, setShowForm }) => {
   const deleteTransaction = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/delete-transaction/${id}`, {
@@ -8,7 +8,7 @@ const Transactions = ({ transactions, refreshTransactions }) => {
       });
 
       if (response.ok) {
-        refreshTransactions(); // Refresh transactions after deleting
+        refreshTransactions();
       } else {
         alert("Failed to delete transaction");
       }
@@ -27,7 +27,7 @@ const Transactions = ({ transactions, refreshTransactions }) => {
             <th>Amount</th>
             <th>Type</th>
             <th>Category</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +41,15 @@ const Transactions = ({ transactions, refreshTransactions }) => {
                 <td>{tx.category}</td>
                 <td>
                   <button
+                    onClick={() => {
+                      setEditTransaction(tx);
+                      setShowForm(true); // Show form when editing
+                    }}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                  >
+                    Edit
+                  </button>
+                  <button
                     onClick={() => deleteTransaction(tx.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded"
                   >
@@ -51,7 +60,9 @@ const Transactions = ({ transactions, refreshTransactions }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">No Transactions Found</td>
+              <td colSpan="6" className="text-center">
+                No Transactions Found
+              </td>
             </tr>
           )}
         </tbody>
