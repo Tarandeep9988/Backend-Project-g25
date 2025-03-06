@@ -18,22 +18,22 @@ const Transactions = ({ transactions, refreshTransactions, setEditTransaction, s
   };
 
   return (
-    <div className="w-full p-3 bg-amber-300">
+    <div className="w-full p-3 bg-amber-300 mt-5">
       <table className="w-full">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Actions</th>
+            <th className="text-left">Date</th>
+            <th className="text-left">Title</th>
+            <th className="text-left">Amount</th>
+            <th className="text-left">Type</th>
+            <th className="text-left">Category</th>
+            <th className="text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {transactions.length > 0 ? (
             transactions.map((tx) => (
-              <tr key={tx.id}>
+              <tr className="h-10" key={tx.id}>
                 <td>{tx.date}</td>
                 <td>{tx.title}</td>
                 <td>{tx.amount}</td>
