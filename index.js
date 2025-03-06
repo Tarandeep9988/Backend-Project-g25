@@ -11,7 +11,15 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(morgan("tiny"));
+app.use(morgan("combined", {
+  stream: {
+    write: (message) => {
+      fs.appendFile("logs.txt", message, (err) => {
+        if (err) console.error("Failed to save log:", err);
+      });
+    },
+  },
+}));
 app.use(express.json());
 app.use(cors());
 
@@ -28,8 +36,7 @@ app.get("/transactions", (req, res) => {
     }
     res.json(JSON.parse(data));
   });
-}
-);
+});
 
 // Custom middlewares
 const validateTransaction = (req, res, next) => {
@@ -37,10 +44,8 @@ const validateTransaction = (req, res, next) => {
   if (!title || !amount || !type || !category) {
     return res.status(400).json({ error: "All fields are required" });
   }
-  next(); 
+  next();
 };
-
-
 
 // Adding a new transaction
 app.post("/add-transaction", validateTransaction, (req, res) => {
@@ -79,7 +84,7 @@ app.delete("/delete-transaction/:id", (req, res) => {
 
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
-        console.error(err);
+      console.error(err);
       return res.status(500).send("Error reading transactions file");
     }
 
@@ -98,8 +103,7 @@ app.delete("/delete-transaction/:id", (req, res) => {
       }
     );
   });
-}
-);
+});
 
 app.put("/update-transaction/:id", (req, res) => {
   const id = parseInt(req.params.id);
@@ -126,16 +130,19 @@ app.put("/update-transaction/:id", (req, res) => {
       category,
     };
 
-    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Error updating transaction");
+    fs.writeFile(
+      "transactions.json",
+      JSON.stringify(transactions, null, 2),
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error updating transaction");
+        }
+        res.send("Transaction updated successfully!");
       }
-      res.send("Transaction updated successfully!");
-    });
+    );
   });
 });
-
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
