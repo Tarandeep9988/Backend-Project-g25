@@ -45,13 +45,13 @@ const Transactions = ({ transactions, refreshTransactions, setEditTransaction, s
                       setEditTransaction(tx);
                       setShowForm(true); // Show form when editing
                     }}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 cursor-pointer"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteTransaction(tx.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded cursor-pointer"
                   >
                     Delete
                   </button>
