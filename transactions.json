@@ -1,29 +1,29 @@
 [
   {
-    "id": 1741200641410,
+    "id": 1741245714178,
     "date": "6/3/2025",
-    "time": "12:20:41 am",
-    "title": "bhai",
-    "amount": "370.00",
+    "time": "12:51:54 pm",
+    "title": "sold a pair of speaker",
+    "amount": "15000",
     "type": "income",
-    "category": "hello world"
+    "category": "speakers/electronic device"
   },
   {
-    "id": 1741203220054,
+    "id": 1741245993098,
     "date": "6/3/2025",
-    "time": "1:03:40 am",
-    "title": "bhai yar kr dena, ache points lga dena",
-    "amount": "370.00",
+    "time": "12:56:33 pm",
+    "title": "sold a pair of speaker",
+    "amount": "15000",
     "type": "income",
-    "category": "hello world"
+    "category": "speakers/electronic device"
   },
   {
-    "id": 1741203357740,
+    "id": 1741246019385,
     "date": "6/3/2025",
-    "time": "1:05:57 am",
-    "title": "pls krdena, ache points lga dena yaro",
-    "amount": "43342",
-    "type": "expense",
-    "category": "hello world"
+    "time": "12:56:59 pm",
+    "title": "new",
+    "amount": "15000",
+    "type": "income",
+    "category": "Others"
   }
 ]
