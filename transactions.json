@@ -42,7 +42,7 @@
     "title": "Consulting Fee",
     "amount": "350",
     "type": "income",
-    "category": "Consulting"
+    "category": "Consulting Category"
   },
   {
     "id": 1744740964756,
@@ -50,6 +50,15 @@
     "time": "11:46:04 PM",
     "title": "Sample",
     "amount": "100293",
+    "type": "income",
+    "category": "Others"
+  },
+  {
+    "id": 1744741309646,
+    "date": "4/15/2025",
+    "time": "11:51:49 PM",
+    "title": "Test transaction",
+    "amount": "12342134",
     "type": "income",
     "category": "Others"
   }

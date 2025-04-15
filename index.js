@@ -11,15 +11,17 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(morgan("combined", {
-  stream: {
-    write: (message) => {
-      fs.appendFile("logs.txt", message, (err) => {
-        if (err) console.error("Failed to save log:", err);
-      });
+app.use(
+  morgan("combined", {
+    stream: {
+      write: (message) => {
+        fs.appendFile("logs.txt", message, (err) => {
+          if (err) console.error("Failed to save log:", err);
+        });
+      },
     },
-  },
-}));
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,12 +35,10 @@ const validateTransaction = (req, res, next) => {
   next();
 };
 
-// Redirect to transactions page by default
 app.get("/", (req, res) => {
   res.redirect("/transactions");
 });
 
-// Transactions list page
 app.get("/transactions", (req, res) => {
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
@@ -46,16 +46,14 @@ app.get("/transactions", (req, res) => {
       return res.status(500).send("Error reading transactions file");
     }
     const transactions = data ? JSON.parse(data) : [];
-    res.render("transactions", { transactions });
+    res.status(200).render("transactions", { transactions });
   });
 });
 
-// Add transaction form
 app.get("/add-transaction", (req, res) => {
-  res.render("form", { editTransaction: null });
+  res.status(200).render("form", { editTransaction: null });
 });
 
-// Edit transaction form
 app.get("/edit-transaction/:id", (req, res) => {
   const id = parseInt(req.params.id);
   fs.readFile("transactions.json", "utf8", (err, data) => {
@@ -68,12 +66,10 @@ app.get("/edit-transaction/:id", (req, res) => {
     if (!editTransaction) {
       return res.status(404).send("Transaction not found");
     }
-    res.render("form", { editTransaction });
+    res.status(200).render("form", { editTransaction });
   });
 });
 
-
-// Add new transaction
 app.post("/add-transaction", validateTransaction, (req, res) => {
   const now = new Date();
   const id = now.getTime();
@@ -90,21 +86,16 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
     const transactions = data ? JSON.parse(data) : [];
     transactions.push({ id, date, time, title, amount, type, category });
 
-    fs.writeFile(
-      "transactions.json",
-      JSON.stringify(transactions, null, 2),
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Error saving transaction");
-        }
-        res.redirect("/transactions");
+    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error saving transaction");
       }
-    );
+      res.status(201).redirect("/transactions");
+    });
   });
 });
 
-// Delete transaction
 app.post("/delete-transaction/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -117,21 +108,16 @@ app.post("/delete-transaction/:id", (req, res) => {
     const transactions = data ? JSON.parse(data) : [];
     const newTransactions = transactions.filter((t) => t.id !== id);
 
-    fs.writeFile(
-      "transactions.json",
-      JSON.stringify(newTransactions, null, 2),
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Error deleting transaction");
-        }
-        res.redirect("/transactions");
+    fs.writeFile("transactions.json", JSON.stringify(newTransactions, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error deleting transaction");
       }
-    );
+      res.status(200).redirect("/transactions");
+    });
   });
 });
 
-// Update transaction
 app.post("/update-transaction/:id", validateTransaction, (req, res) => {
   const id = parseInt(req.params.id);
   const { title, amount, type, category } = req.body;
@@ -157,17 +143,13 @@ app.post("/update-transaction/:id", validateTransaction, (req, res) => {
       category,
     };
 
-    fs.writeFile(
-      "transactions.json",
-      JSON.stringify(transactions, null, 2),
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Error updating transaction");
-        }
-        res.redirect("/transactions");
+    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error updating transaction");
       }
-    );
+      res.status(200).redirect("/transactions");
+    });
   });
 });
 
