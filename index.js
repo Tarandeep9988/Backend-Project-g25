@@ -5,17 +5,13 @@ const fs = require("fs");
 const cors = require("cors");
 const path = require("path");
 
-// Loading environment variables
 dotenv.config();
 
-// Create the Express app
 const app = express();
 
-// Set view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Middlewares
 app.use(morgan("combined", {
   stream: {
     write: (message) => {
@@ -31,7 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static("public"));
 
-// Custom middlewares
 const validateTransaction = (req, res, next) => {
   const { title, amount, type, category } = req.body;
   if (!title || !amount || !type || !category) {
@@ -40,44 +35,47 @@ const validateTransaction = (req, res, next) => {
   next();
 };
 
-// Home Page Route
+// Redirect to transactions page by default
 app.get("/", (req, res) => {
-  const showForm = req.query.form === "true";
+  res.redirect("/transactions");
+});
 
+// Transactions list page
+app.get("/transactions", (req, res) => {
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send("Error reading transactions file");
     }
     const transactions = data ? JSON.parse(data) : [];
-    res.render("home", { transactions, showForm, editTransaction: null });
+    res.render("transactions", { transactions });
   });
 });
 
-// Edit transaction form route
-app.get("/edit-transaction/:id", (req, res) => {
-  const showForm = true;
-  const id = parseInt(req.params.id);
+// Add transaction form
+app.get("/add-transaction", (req, res) => {
+  res.render("form", { editTransaction: null });
+});
 
+// Edit transaction form
+app.get("/edit-transaction/:id", (req, res) => {
+  const id = parseInt(req.params.id);
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send("Error reading transactions file");
     }
-
     const transactions = data ? JSON.parse(data) : [];
     const editTransaction = transactions.find((t) => t.id === id);
-
     if (!editTransaction) {
       return res.status(404).send("Transaction not found");
     }
-
-    res.render("home", { transactions, showForm, editTransaction });
+    res.render("form", { editTransaction });
   });
 });
 
-// Get all transactions
-app.get("/transactions", (req, res) => {
+// Get transactions as JSON (API)
+app.get("/transactions/api", (req, res) => {
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -87,7 +85,7 @@ app.get("/transactions", (req, res) => {
   });
 });
 
-// Adding a new transaction
+// Add new transaction
 app.post("/add-transaction", validateTransaction, (req, res) => {
   const now = new Date();
   const id = now.getTime();
@@ -112,13 +110,13 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
           console.error(err);
           return res.status(500).send("Error saving transaction");
         }
-        res.redirect("/");
+        res.redirect("/transactions");
       }
     );
   });
 });
 
-// Deleting a transaction
+// Delete transaction
 app.post("/delete-transaction/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -139,13 +137,13 @@ app.post("/delete-transaction/:id", (req, res) => {
           console.error(err);
           return res.status(500).send("Error deleting transaction");
         }
-        res.redirect("/");
+        res.redirect("/transactions");
       }
     );
   });
 });
 
-// Updating a transaction
+// Update transaction
 app.post("/update-transaction/:id", validateTransaction, (req, res) => {
   const id = parseInt(req.params.id);
   const { title, amount, type, category } = req.body;
@@ -179,7 +177,7 @@ app.post("/update-transaction/:id", validateTransaction, (req, res) => {
           console.error(err);
           return res.status(500).send("Error updating transaction");
         }
-        res.redirect("/");
+        res.redirect("/transactions");
       }
     );
   });

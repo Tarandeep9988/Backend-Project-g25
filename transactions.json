@@ -1,56 +1,42 @@
 [
   {
-    "id": 1741245993098,
-    "date": "6/3/2025",
-    "time": "12:56:33 pm",
-    "title": "sold a pair of speaker",
-    "amount": "15000",
+    "id": 1,
+    "title": "Freelance Project",
+    "amount": 500,
     "type": "income",
-    "category": "speakers/electronic device"
+    "category": "Work",
+    "date": "2025-04-01"
   },
   {
-    "id": 1741246019385,
-    "date": "6/3/2025",
-    "time": "12:56:59 pm",
-    "title": "new",
-    "amount": "15000",
-    "type": "income",
-    "category": "Others"
-  },
-  {
-    "id": 1741250231611,
-    "date": "6/3/2025",
-    "time": "2:07:11 pm",
-    "title": "bought headphones",
-    "amount": "4000",
+    "id": 2,
+    "title": "Grocery Shopping",
+    "amount": 150,
     "type": "expense",
-    "category": "headphones/electronic device"
+    "category": "Food",
+    "date": "2025-04-03"
   },
   {
-    "id": 1744730516722,
-    "date": "15/4/2025",
-    "time": "8:51:56 pm",
-    "title": "bought headphones",
-    "amount": "4000",
-    "type": "income",
-    "category": "headphones/electronic device"
+    "id": 3,
+    "title": "Web Hosting",
+    "amount": 100,
+    "type": "expense",
+    "category": "Subscriptions",
+    "date": "2025-04-04"
   },
   {
-    "id": 1744730530836,
-    "date": "15/4/2025",
-    "time": "8:52:10 pm",
-    "title": "sold a pair of speaker",
-    "amount": "4000",
-    "type": "income",
-    "category": "headphones/electronic device"
+    "id": 5,
+    "title": "Dinner with Friends",
+    "amount": 80,
+    "type": "expense",
+    "category": "Food",
+    "date": "2025-04-06"
   },
   {
-    "id": 1744730542093,
-    "date": "15/4/2025",
-    "time": "8:52:22 pm",
-    "title": "pls krdena, ache points lga dena yaro",
-    "amount": "4000",
+    "id": 6,
+    "title": "Consulting Fee",
+    "amount": 350,
     "type": "income",
-    "category": "headphones/electronic device"
+    "category": "Consulting",
+    "date": "2025-04-07"
   }
 ]

@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+  
+  <div class="top-bar">
+    <a href="/add-transaction">
+      <button class="btn btn-primary">Add New</button>
+    </a>
+  </div>
+  
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (transactions.length > 0) { %>
+          <% transactions.forEach(tx => { %>
+            <tr>
+              <td><%= tx.date %></td>
+              <td><%= tx.title %></td>
+              <td><%= tx.amount %></td>
+              <td class="<%= tx.type === 'income' ? 'text-green' : 'text-red' %>" ><%= tx.type %></td>
+              <td><%= tx.category %></td>
+              <td>
+                <form action="/edit-transaction/<%= tx.id %>" method="GET" class="inline-form">
+                  <button class="btn btn-edit">Edit</button>
+                </form>
+                <form action="/delete-transaction/<%= tx.id %>" method="POST" class="inline-form" onsubmit="return confirmDelete()">
+                  <button class="btn btn-delete">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center">No Transactions Found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function confirmDelete() {
+      return confirm("Are you sure you want to delete this transaction?");
+    }
+  </script>
+
+<%- include('partials/footer') %>
