@@ -3,12 +3,17 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const cors = require("cors");
+const path = require("path");
 
 // Loading environment variables
 dotenv.config();
 
 // Create the Express app
 const app = express();
+
+// Set view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // Middlewares
 app.use(morgan("combined", {
@@ -20,11 +25,55 @@ app.use(morgan("combined", {
     },
   },
 }));
-app.use(express.json());
-app.use(cors());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.static("public"));
+
+// Custom middlewares
+const validateTransaction = (req, res, next) => {
+  const { title, amount, type, category } = req.body;
+  if (!title || !amount || !type || !category) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+  next();
+};
+
+// Home Page Route
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  const showForm = req.query.form === "true";
+
+  fs.readFile("transactions.json", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error reading transactions file");
+    }
+    const transactions = data ? JSON.parse(data) : [];
+    res.render("home", { transactions, showForm, editTransaction: null });
+  });
+});
+
+// Edit transaction form route
+app.get("/edit-transaction/:id", (req, res) => {
+  const showForm = true;
+  const id = parseInt(req.params.id);
+
+  fs.readFile("transactions.json", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error reading transactions file");
+    }
+
+    const transactions = data ? JSON.parse(data) : [];
+    const editTransaction = transactions.find((t) => t.id === id);
+
+    if (!editTransaction) {
+      return res.status(404).send("Transaction not found");
+    }
+
+    res.render("home", { transactions, showForm, editTransaction });
+  });
 });
 
 // Get all transactions
@@ -37,15 +86,6 @@ app.get("/transactions", (req, res) => {
     res.json(JSON.parse(data));
   });
 });
-
-// Custom middlewares
-const validateTransaction = (req, res, next) => {
-  const { title, amount, type, category } = req.body;
-  if (!title || !amount || !type || !category) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-  next();
-};
 
 // Adding a new transaction
 app.post("/add-transaction", validateTransaction, (req, res) => {
@@ -72,14 +112,14 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
           console.error(err);
           return res.status(500).send("Error saving transaction");
         }
-        res.send("Transaction added successfully!");
+        res.redirect("/");
       }
     );
   });
 });
 
 // Deleting a transaction
-app.delete("/delete-transaction/:id", (req, res) => {
+app.post("/delete-transaction/:id", (req, res) => {
   const id = parseInt(req.params.id);
 
   fs.readFile("transactions.json", "utf8", (err, data) => {
@@ -99,13 +139,14 @@ app.delete("/delete-transaction/:id", (req, res) => {
           console.error(err);
           return res.status(500).send("Error deleting transaction");
         }
-        res.send("Transaction deleted successfully!");
+        res.redirect("/");
       }
     );
   });
 });
 
-app.put("/update-transaction/:id", (req, res) => {
+// Updating a transaction
+app.post("/update-transaction/:id", validateTransaction, (req, res) => {
   const id = parseInt(req.params.id);
   const { title, amount, type, category } = req.body;
 
@@ -123,7 +164,7 @@ app.put("/update-transaction/:id", (req, res) => {
     }
 
     transactions[transactionIndex] = {
-      ...transactions[transactionIndex], // Retain date & time
+      ...transactions[transactionIndex],
       title,
       amount,
       type,
@@ -138,7 +179,7 @@ app.put("/update-transaction/:id", (req, res) => {
           console.error(err);
           return res.status(500).send("Error updating transaction");
         }
-        res.send("Transaction updated successfully!");
+        res.redirect("/");
       }
     );
   });

@@ -1,14 +1,5 @@
 [
   {
-    "id": 1741245714178,
-    "date": "6/3/2025",
-    "time": "12:51:54 pm",
-    "title": "sold a pair of speaker",
-    "amount": "15000",
-    "type": "income",
-    "category": "speakers/electronic device"
-  },
-  {
     "id": 1741245993098,
     "date": "6/3/2025",
     "time": "12:56:33 pm",
@@ -25,5 +16,41 @@
     "amount": "15000",
     "type": "income",
     "category": "Others"
+  },
+  {
+    "id": 1741250231611,
+    "date": "6/3/2025",
+    "time": "2:07:11 pm",
+    "title": "bought headphones",
+    "amount": "4000",
+    "type": "expense",
+    "category": "headphones/electronic device"
+  },
+  {
+    "id": 1744730516722,
+    "date": "15/4/2025",
+    "time": "8:51:56 pm",
+    "title": "bought headphones",
+    "amount": "4000",
+    "type": "income",
+    "category": "headphones/electronic device"
+  },
+  {
+    "id": 1744730530836,
+    "date": "15/4/2025",
+    "time": "8:52:10 pm",
+    "title": "sold a pair of speaker",
+    "amount": "4000",
+    "type": "income",
+    "category": "headphones/electronic device"
+  },
+  {
+    "id": 1744730542093,
+    "date": "15/4/2025",
+    "time": "8:52:22 pm",
+    "title": "pls krdena, ache points lga dena yaro",
+    "amount": "4000",
+    "type": "income",
+    "category": "headphones/electronic device"
   }
 ]
