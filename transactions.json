@@ -1,42 +1,56 @@
 [
   {
-    "id": 1,
+    "id": 1744740960001,
+    "date": "4/1/2025",
+    "time": "10:00:00 AM",
     "title": "Freelance Project",
-    "amount": 500,
+    "amount": "500",
     "type": "income",
-    "category": "Work",
-    "date": "2025-04-01"
+    "category": "Work"
   },
   {
-    "id": 2,
+    "id": 1744740960002,
+    "date": "4/3/2025",
+    "time": "02:30:00 PM",
     "title": "Grocery Shopping",
-    "amount": 150,
+    "amount": "150",
     "type": "expense",
-    "category": "Food",
-    "date": "2025-04-03"
+    "category": "Food"
   },
   {
-    "id": 3,
+    "id": 1744740960003,
+    "date": "4/4/2025",
+    "time": "01:15:00 PM",
     "title": "Web Hosting",
-    "amount": 100,
+    "amount": "100",
     "type": "expense",
-    "category": "Subscriptions",
-    "date": "2025-04-04"
+    "category": "Subscriptions"
   },
   {
-    "id": 5,
+    "id": 1744740960004,
+    "date": "4/6/2025",
+    "time": "08:45:00 PM",
     "title": "Dinner with Friends",
-    "amount": 80,
+    "amount": "80",
     "type": "expense",
-    "category": "Food",
-    "date": "2025-04-06"
+    "category": "Food"
   },
   {
-    "id": 6,
+    "id": 1744740960005,
+    "date": "4/7/2025",
+    "time": "11:00:00 AM",
     "title": "Consulting Fee",
-    "amount": 350,
+    "amount": "350",
     "type": "income",
-    "category": "Consulting",
-    "date": "2025-04-07"
+    "category": "Consulting"
+  },
+  {
+    "id": 1744740964756,
+    "date": "4/15/2025",
+    "time": "11:46:04 PM",
+    "title": "Sample",
+    "amount": "100293",
+    "type": "income",
+    "category": "Others"
   }
 ]

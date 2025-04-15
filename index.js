@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const fs = require("fs");
-const cors = require("cors");
 const path = require("path");
 
 dotenv.config();
@@ -24,7 +23,6 @@ app.use(morgan("combined", {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 app.use(express.static("public"));
 
 const validateTransaction = (req, res, next) => {
@@ -74,16 +72,6 @@ app.get("/edit-transaction/:id", (req, res) => {
   });
 });
 
-// Get transactions as JSON (API)
-app.get("/transactions/api", (req, res) => {
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
-    }
-    res.json(JSON.parse(data));
-  });
-});
 
 // Add new transaction
 app.post("/add-transaction", validateTransaction, (req, res) => {
