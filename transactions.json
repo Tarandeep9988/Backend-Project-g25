@@ -1,20 +1,11 @@
 [
   {
-    "id": 1744740960001,
-    "date": "4/1/2025",
-    "time": "10:00:00 AM",
-    "title": "Freelance Project",
-    "amount": "500",
-    "type": "income",
-    "category": "Work"
-  },
-  {
     "id": 1744740960002,
     "date": "4/3/2025",
     "time": "02:30:00 PM",
     "title": "Grocery Shopping",
     "amount": "150",
-    "type": "expense",
+    "type": "income",
     "category": "Food"
   },
   {
@@ -52,5 +43,14 @@
     "amount": "100293",
     "type": "income",
     "category": "Others"
+  },
+  {
+    "id": 1747226407498,
+    "date": "5/14/2025",
+    "time": "6:10:07 PM",
+    "title": "New Transaction",
+    "amount": "9999",
+    "type": "income",
+    "category": "Nonsense"
   }
 ]

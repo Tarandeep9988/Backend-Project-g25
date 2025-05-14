@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const connectDB = require("./config/db");
+const validateTransaction = require("./middlewares/validateTransaction");
+const Transaction = require("./models/Transaction");
 
 dotenv.config();
 
@@ -32,19 +34,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const validateTransaction = (req, res, next) => {
-  const { title, amount, type, category } = req.body;
-  if (!title || !amount || !type || !category) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-  next();
-};
 
 app.get("/", (req, res) => {
   res.redirect("/transactions");
 });
 
-app.get("/transactions", (req, res) => {
+app.get("/transactions", async (req, res) => {
   fs.readFile("transactions.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -55,7 +50,7 @@ app.get("/transactions", (req, res) => {
   });
 });
 
-app.get("/add-transaction", (req, res) => {
+app.get("/add-transaction", (req, res) => {  
   res.status(200).render("form", { editTransaction: null });
 });
 
@@ -76,29 +71,22 @@ app.get("/edit-transaction/:id", (req, res) => {
 });
 
 app.post("/add-transaction", validateTransaction, (req, res) => {
-  const now = new Date();
-  const id = now.getTime();
-  const date = now.toLocaleDateString();
-  const time = now.toLocaleTimeString();
   const { title, amount, type, category } = req.body;
-
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
-    }
-
-    const transactions = data ? JSON.parse(data) : [];
-    transactions.push({ id, date, time, title, amount, type, category });
-
-    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Error saving transaction");
-      }
-      res.status(201).redirect("/transactions");
-    });
+  const newTransaction = new Transaction({
+    title,
+    amount,
+    type,
+    category,
   });
+  console.log(newTransaction);
+  
+  newTransaction.save()
+  .then((t) => {
+    return res.status(201).redirect("/transactions");
+  })
+  .catch((e) => {
+    return res.status(500).send("Error saving Transactions");
+  })
 });
 
 app.post("/delete-transaction/:id", (req, res) => {
