@@ -51,6 +51,7 @@ app.get("/transactions", async (req, res) => {
       const time = new Date(transaction.createdAt).toLocaleTimeString();
       transactions.push({id, date, time, title : transaction.title, amount : transaction.amount, type: transaction.type, category: transaction.category});
     }
+    console.log(transactions);
     
     return res.status(200).render("transactions", { transactions });
   })
@@ -58,34 +59,33 @@ app.get("/transactions", async (req, res) => {
     console.log(err);
     return res.status(500).send("Error reading transactions");
   });
-  // fs.readFile("transactions.json", "utf8", (err, data) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return res.status(500).send("Error reading transactions file");
-  //   }
-  //   const transactions = data ? JSON.parse(data) : [];
-  //   res.status(200).render("transactions", { transactions });
-  // });
 });
 
 app.get("/add-transaction", (req, res) => {  
-  res.status(200).render("form", { editTransaction: null });
+  res.status(200).render("form", { editTransaction : null });
 });
 
 app.get("/edit-transaction/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
+  const id = req.params.id;
+  // console.log(id);
+  
+  // Need to verify the id
+  Transaction.findById(id)
+  .then((t) => {
+    // console.log(t);
+    const transaction = {
+      id,
+      title : t.title,
+      amount : t.amount,
+      type : t.type,
+      category : t.category,
     }
-    const transactions = data ? JSON.parse(data) : [];
-    const editTransaction = transactions.find((t) => t.id === id);
-    if (!editTransaction) {
-      return res.status(404).send("Transaction not found");
-    }
-    res.status(200).render("form", { editTransaction });
+    return res.status(200).render("form", {editTransaction : transaction });
+  })
+  .catch((e) => {
+    return res.status(500).send("Invalid ID!");
   });
+  
 });
 
 app.post("/add-transaction", validateTransaction, (req, res) => {
@@ -109,59 +109,27 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
 });
 
 app.post("/delete-transaction/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
-    }
-
-    const transactions = data ? JSON.parse(data) : [];
-    const newTransactions = transactions.filter((t) => t.id !== id);
-
-    fs.writeFile("transactions.json", JSON.stringify(newTransactions, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Error deleting transaction");
-      }
-      res.status(200).redirect("/transactions");
-    });
+  const id = req.params.id;
+  Transaction.findByIdAndDelete(id)
+  .then((e) => {
+    res.status(200).redirect("/transactions");
+  })
+  .catch((e) => {
+    res.status(500).send("Unable to Delete");
   });
 });
 
 app.post("/update-transaction/:id", validateTransaction, (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { title, amount, type, category } = req.body;
-
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
-    }
-
-    const transactions = data ? JSON.parse(data) : [];
-    const transactionIndex = transactions.findIndex((t) => t.id === id);
-
-    if (transactionIndex === -1) {
-      return res.status(404).send("Transaction not found");
-    }
-
-    transactions[transactionIndex] = {
-      ...transactions[transactionIndex],
-      title,
-      amount,
-      type,
-      category,
-    };
-
-    fs.writeFile("transactions.json", JSON.stringify(transactions, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Error updating transaction");
-      }
-      res.status(200).redirect("/transactions");
-    });
+  Transaction.findByIdAndUpdate(id, {
+    title, amount, type, category
+  })
+  .then(() => {
+    res.status(200).redirect('/transactions');
+  })
+  .catch((e) => {
+    res.status(501).send("Invalid id");
   });
 });
 
