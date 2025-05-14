@@ -43,7 +43,7 @@ app.get("/transactions", async (req, res) => {
 
   Transaction.find()
   .then((t) => {
-    console.log(t);
+    // console.log(t);
     const transactions = [];
     for (const transaction of t) {
       const id = String(transaction._id);
@@ -51,7 +51,7 @@ app.get("/transactions", async (req, res) => {
       const time = new Date(transaction.createdAt).toLocaleTimeString();
       transactions.push({id, date, time, title : transaction.title, amount : transaction.amount, type: transaction.type, category: transaction.category});
     }
-    console.log(transactions);
+    // console.log(transactions);
     
     return res.status(200).render("transactions", { transactions });
   })
@@ -104,6 +104,8 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
     return res.status(201).redirect("/transactions");
   })
   .catch((e) => {
+    console.log(e);
+    
     return res.status(500).send("Error saving Transactions");
   })
 });
