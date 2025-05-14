@@ -40,14 +40,32 @@ app.get("/", (req, res) => {
 });
 
 app.get("/transactions", async (req, res) => {
-  fs.readFile("transactions.json", "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error reading transactions file");
+
+  Transaction.find()
+  .then((t) => {
+    console.log(t);
+    const transactions = [];
+    for (const transaction of t) {
+      const id = String(transaction._id);
+      const date = new Date(transaction.createdAt).toLocaleDateString();
+      const time = new Date(transaction.createdAt).toLocaleTimeString();
+      transactions.push({id, date, time, title : transaction.title, amount : transaction.amount, type: transaction.type, category: transaction.category});
     }
-    const transactions = data ? JSON.parse(data) : [];
-    res.status(200).render("transactions", { transactions });
+    
+    return res.status(200).render("transactions", { transactions });
+  })
+  .catch((err) => {
+    console.log(err);
+    return res.status(500).send("Error reading transactions");
   });
+  // fs.readFile("transactions.json", "utf8", (err, data) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return res.status(500).send("Error reading transactions file");
+  //   }
+  //   const transactions = data ? JSON.parse(data) : [];
+  //   res.status(200).render("transactions", { transactions });
+  // });
 });
 
 app.get("/add-transaction", (req, res) => {  
@@ -78,7 +96,8 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
     type,
     category,
   });
-  console.log(newTransaction);
+
+  // console.log(newTransaction);
   
   newTransaction.save()
   .then((t) => {
