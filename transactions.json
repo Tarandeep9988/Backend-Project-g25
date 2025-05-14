@@ -52,14 +52,5 @@
     "amount": "100293",
     "type": "income",
     "category": "Others"
-  },
-  {
-    "id": 1744741309646,
-    "date": "4/15/2025",
-    "time": "11:51:49 PM",
-    "title": "Test transaction",
-    "amount": "12342134",
-    "type": "income",
-    "category": "Others"
   }
 ]
