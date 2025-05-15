@@ -1,12 +1,10 @@
 const express = require("express");
-const morgan = require("morgan");
 const dotenv = require("dotenv");
-const fs = require("fs");
 const path = require("path");
-const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const validateTransaction = require("./middlewares/validateTransaction");
 const Transaction = require("./models/Transaction");
+const reqLog = require("./middlewares/reqLog");
 
 dotenv.config();
 
@@ -15,26 +13,20 @@ const app = express();
 // Connect to mongoDB server
 connectDB(app);
 
+// view ejs setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(
-  morgan("combined", {
-    stream: {
-      write: (message) => {
-        fs.appendFile("logs.txt", message, (err) => {
-          if (err) console.error("Failed to save log:", err);
-        });
-      },
-    },
-  })
-);
+// custom middleware for logging everything in logs.txt
+app.use(reqLog);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
+
+// Routes
 app.get("/", (req, res) => {
   res.redirect("/transactions");
 });

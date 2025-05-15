@@ -705,3 +705,7 @@
 ::1 - - [14/May/2025:15:08:09 +0000] "POST /add-transaction HTTP/1.1" 302 42 "http://localhost:3000/add-transaction" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
 ::1 - - [14/May/2025:15:08:10 +0000] "GET /transactions HTTP/1.1" 200 2181 "http://localhost:3000/add-transaction" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
 ::1 - - [14/May/2025:15:08:10 +0000] "GET /styles.css HTTP/1.1" 304 - "http://localhost:3000/transactions" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+::1 - - [15/May/2025:00:16:30 +0000] "GET /transactions HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+::1 - - [15/May/2025:00:16:30 +0000] "GET /styles.css HTTP/1.1" 304 - "http://localhost:3000/transactions" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+::1 - - [15/May/2025:00:16:31 +0000] "GET /transactions HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+::1 - - [15/May/2025:00:16:31 +0000] "GET /styles.css HTTP/1.1" 304 - "http://localhost:3000/transactions" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
