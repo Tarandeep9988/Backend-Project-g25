@@ -4,6 +4,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 const validateTransaction = require("./middlewares/validateTransaction");
 const Transaction = require("./models/Transaction");
+const errorHandler = require("./middlewares/errorHandler");
 const reqLog = require("./middlewares/reqLog");
 
 dotenv.config();
@@ -27,11 +28,11 @@ app.use(express.static("public"));
 
 
 // Routes
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
   res.redirect("/transactions");
 });
 
-app.get("/transactions", async (req, res) => {
+app.get("/transactions", async (req, res, next) => {
 
   Transaction.find()
   .then((t) => {
@@ -49,15 +50,15 @@ app.get("/transactions", async (req, res) => {
   })
   .catch((err) => {
     console.log(err);
-    return res.status(500).send("Error reading transactions");
+    return next(err);
   });
 });
 
-app.get("/add-transaction", (req, res) => {  
+app.get("/add-transaction", (req, res, next) => {  
   res.status(200).render("form", { editTransaction : null });
 });
 
-app.get("/edit-transaction/:id", (req, res) => {
+app.get("/edit-transaction/:id", (req, res, next) => {
   const id = req.params.id;
   // console.log(id);
   
@@ -75,12 +76,12 @@ app.get("/edit-transaction/:id", (req, res) => {
     return res.status(200).render("form", {editTransaction : transaction });
   })
   .catch((e) => {
-    return res.status(500).send("Invalid ID!");
+    return next(e);
   });
   
 });
 
-app.post("/add-transaction", validateTransaction, (req, res) => {
+app.post("/add-transaction", validateTransaction, (req, res, next) => {
   const { title, amount, type, category } = req.body;
   const newTransaction = new Transaction({
     title,
@@ -98,22 +99,22 @@ app.post("/add-transaction", validateTransaction, (req, res) => {
   .catch((e) => {
     console.log(e);
     
-    return res.status(500).send("Error saving Transactions");
+    return next(e);
   })
 });
 
-app.post("/delete-transaction/:id", (req, res) => {
+app.post("/delete-transaction/:id", (req, res, next) => {
   const id = req.params.id;
   Transaction.findByIdAndDelete(id)
   .then((e) => {
     res.status(200).redirect("/transactions");
   })
   .catch((e) => {
-    res.status(500).send("Unable to Delete");
+    return next(e);
   });
 });
 
-app.post("/update-transaction/:id", validateTransaction, (req, res) => {
+app.post("/update-transaction/:id", validateTransaction, (req, res, next) => {
   const id = req.params.id;
   const { title, amount, type, category } = req.body;
   Transaction.findByIdAndUpdate(id, {
@@ -123,7 +124,11 @@ app.post("/update-transaction/:id", validateTransaction, (req, res) => {
     res.status(200).redirect('/transactions');
   })
   .catch((e) => {
-    res.status(501).send("Invalid id");
+    return next(e);
   });
 });
 
+
+
+// Error handling middleware
+app.use(errorHandler);
