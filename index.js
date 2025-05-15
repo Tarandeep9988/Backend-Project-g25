@@ -128,7 +128,12 @@ app.post("/update-transaction/:id", validateTransaction, (req, res, next) => {
   });
 });
 
-
+// To handle invalid routes
+app.all("*", (req, res, next) => {
+  const e = new Error("Page not found");
+  e.status = 404;
+  next(e);
+})
 
 // Error handling middleware
 app.use(errorHandler);
